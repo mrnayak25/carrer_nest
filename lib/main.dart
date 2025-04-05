@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import './student/dashboard.dart'; // Import the dashboard screen
+import './student/programing/answer_page.dart';
+import './student/programing/result_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    
+
     // Directly navigate to Dashboard after a short delay
     Future.delayed(Duration(seconds: 2), () {
       Navigator.pushReplacement(
