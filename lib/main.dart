@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'student/dashboard.dart'; // Import the dashboard screen
+import './student/dashboard.dart'; // Dashboard with all test buttons
 
 void main() {
   runApp(const MyApp());
@@ -11,12 +11,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Career Nest',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SplashScreen(), // Show SplashScreen initially
+      debugShowCheckedModeBanner: false,
+      home: const SplashScreen(),
     );
   }
 }
@@ -33,8 +34,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    // Navigate to Dashboard after a short delay
-    Future.delayed(Duration(seconds: 2), () {
+    // Navigate to DashboardPage after 2 seconds
+    Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const DashboardPage()),
@@ -44,14 +45,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Text(
-          'Welcome to My App',
+          'Welcome to Career Nest',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
     );
   }
 }
-
