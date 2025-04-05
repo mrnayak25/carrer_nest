@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './student/dashboard.dart'; // Import the dashboard screen
+import 'student/dashboard.dart'; // Import the dashboard screen
 
 void main() {
   runApp(const MyApp());
@@ -33,11 +33,11 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    // Directly navigate to Dashboard after a short delay
+    // Navigate to Dashboard after a short delay
     Future.delayed(Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => DashboardPage()),
+        MaterialPageRoute(builder: (context) => const DashboardPage()),
       );
     });
   }
@@ -54,3 +54,4 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
+
