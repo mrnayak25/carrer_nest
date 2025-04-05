@@ -1,126 +1,108 @@
-
 import 'package:flutter/material.dart';
-import '../models/quiz.dart';
 
-class QuizScreen extends StatefulWidget {
-  final Quiz quiz;
-
-  const QuizScreen({Key? key, required this.quiz}) : super(key: key);
-
-  @override
-  _QuizScreenState createState() => _QuizScreenState();
+void main() {
+  runApp(QuizApp());
 }
 
-class _QuizScreenState extends State<QuizScreen> {
-  late List<int?> selectedOptions;
-  int currentQuestionIndex = 0;
-
+class QuizApp extends StatelessWidget {
   @override
-  void initState() {
-    super.initState();
-    selectedOptions = List.filled(widget.quiz.questions.length, null);
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: QuizPage(),
+    );
   }
+}
+
+class QuizPage extends StatelessWidget {
+  final List<Map<String, dynamic>> quizzes = [
+    {'title': 'Title of the quiz', 'status': 'Take Quiz'},
+    {'title': 'Title of the quiz', 'status': 'Take Quiz'},
+    {'title': 'Title of the quiz', 'status': 'Take Quiz'},
+    {'title': 'Title of the quiz', 'status': 'Done'},
+    {'title': 'Title of the quiz', 'status': 'Done'},
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final currentQuestion = widget.quiz.questions[currentQuestionIndex];
-
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(widget.quiz.title),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            LinearProgressIndicator(
-              value: (currentQuestionIndex + 1) / widget.quiz.questions.length,
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Question ${currentQuestion.qno}:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Text(
-              currentQuestion.question,
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 20),
-            ...currentQuestion.options.asMap().entries.map((entry) {
-              final index = entry.key;
-              final option = entry.value;
-              return RadioListTile<int>(
-                title: Text(option),
-                value: index,
-                groupValue: selectedOptions[currentQuestionIndex],
-                onChanged: (int? value) {
-                  setState(() {
-                    selectedOptions[currentQuestionIndex] = value;
-                  });
-                },
-              );
-            }).toList(),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                if (currentQuestionIndex > 0)
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        currentQuestionIndex--;
-                      });
-                    },
-                    child: Text('Previous'),
-                  ),
-                if (currentQuestionIndex == widget.quiz.questions.length - 1)
-                  ElevatedButton(
-                    onPressed: () {
-                      _submitQuiz();
-                    },
-                    child: Text('Submit'),
-                  )
-                else
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        currentQuestionIndex++;
-                      });
-                    },
-                    child: Text('Next'),
-                  ),
-              ],
-            ),
-          ],
+        leading: Icon(Icons.arrow_back, color: Colors.black),
+        title: Text(
+          'Quiz',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
       ),
-    );
-  }
+      body: ListView.builder(
+        padding: EdgeInsets.all(12),
+        itemCount: quizzes.length,
+        itemBuilder: (context, index) {
+          final quiz = quizzes[index];
+          final isDone = quiz['status'] == 'Done';
 
-  void _submitQuiz() {
-    int score = 0;
-    for (int i = 0; i < widget.quiz.questions.length; i++) {
-      if (selectedOptions[i] == widget.quiz.questions[i].correctOption) {
-        score++;
-      }
-    }
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Quiz Submitted'),
-        content: Text('Your score: $score/${widget.quiz.questions.length}'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context); // Close dialog
-              Navigator.pop(context); // Go back to quiz list
-            },
-            child: Text('OK'),
-          ),
-        ],
+          return Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+              side: BorderSide(color: Colors.blue, width: 2),
+            ),
+            margin: EdgeInsets.symmetric(vertical: 10),
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    quiz['title'],
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Upload date'),
+                          Text('Total marks'),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text('Due date'),
+                          Text('Status'),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            isDone ? Colors.red : Colors.blue.shade700,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      child: Text(
+                        quiz['status'],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
