@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    
+
     // Directly navigate to Dashboard after a short delay
     Future.delayed(Duration(seconds: 2), () {
       Navigator.pushReplacement(
